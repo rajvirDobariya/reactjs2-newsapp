@@ -48,7 +48,8 @@ export class News extends Component {
   };
 
   handleNextClick = async () => {
-    // if (this.state.page + 1 === Math.ceil(this.state.totalResults / 50)) {
+    console.log(this.state.page);
+    // console.log(this.state.parseData.totalResults);
     if (false) {
     } else {
       let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=9ff805907aa24d7aa8904aa0ff7e8569&page=${
