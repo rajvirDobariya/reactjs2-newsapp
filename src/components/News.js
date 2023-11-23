@@ -1,22 +1,46 @@
 import React, { Component } from "react";
 import NewsItem from "./NewsItem";
+import Spinner from "./Spinner";
+import PropTypes from 'prop-types'
+
 
 export class News extends Component {
+
+   // Static property
+   static defaultProps = {
+    country: 'in',
+    pageSIze:6,
+    category:'general'
+  };
+
+  static propTypes ={
+    country: PropTypes.string,
+    pageSIze:PropTypes.number,
+    category: PropTypes.string,
+  }
   constructor() {
     super();
-    this.state = { articles: [], loading: false, page: 1, pageSize: 30 };
+    this.state = {
+      articles: [],
+      totalResults: 0,
+      loading: false,
+      page: 1,
+      pageSize: 20,
+    };
   }
 
   async componentDidMount() {
-    let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=9ff805907aa24d7aa8904aa0ff7e8569&page=${this.state.page}&pageSize=${this.state.pageSize}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9ff805907aa24d7aa8904aa0ff7e8569&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     try {
+      this.setState({loading:true})
       let data = await fetch(url);
       if (data.ok) {
         let parseData = await data.json();
-        console.log(parseData);
         this.setState({
           articles: parseData.articles,
           totalResults: parseData.totalResults,
+          loading: false,
+
         });
       } else {
         console.error("Network response was not ok.");
@@ -27,17 +51,19 @@ export class News extends Component {
   }
 
   handlePreviousClick = async () => {
-    let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=9ff805907aa24d7aa8904aa0ff7e8569&page=${
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9ff805907aa24d7aa8904aa0ff7e8569&page=${
       this.state.page - 1
-    }&pageSize=${this.state.pageSize}`;
+    }&pageSize=${this.props.pageSize}`;
     try {
+      this.setState({loading:true})
       let data = await fetch(url);
       if (data.ok) {
         let parseData = await data.json();
-        console.log(parseData);
         this.setState({
           page: this.state.page - 1,
           articles: parseData.articles,
+          loading: false,
+
         });
       } else {
         console.error("Network response was not ok.");
@@ -48,21 +74,20 @@ export class News extends Component {
   };
 
   handleNextClick = async () => {
-    console.log(this.state.page);
-    // console.log(this.state.parseData.totalResults);
-    if (false) {
-    } else {
-      let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=9ff805907aa24d7aa8904aa0ff7e8569&page=${
+
+      let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=9ff805907aa24d7aa8904aa0ff7e8569&page=${
         this.state.page + 1
-      }&pageSize=${this.state.pageSize}`;
+      }&pageSize=${this.props.pageSize}`;
       try {
+        this.setState({loading:true})
         let data = await fetch(url);
         if (data.ok) {
           let parseData = await data.json();
-          console.log(parseData);
-          this.setState({
+            this.setState({
             page: this.state.page + 1,
             articles: parseData.articles,
+            loading: false,
+
           });
         } else {
           console.error("Network response was not ok.");
@@ -70,7 +95,7 @@ export class News extends Component {
       } catch (error) {
         console.error("Error fetching data:", error);
       }
-    }
+    
   };
 
   render() {
@@ -78,9 +103,10 @@ export class News extends Component {
       <>
         <div className="container">
           <div className="container my-3">
-            <h2>NewsMonkey - Top Headlines</h2>
+            <h1 className="text-center">NewsMonkey - Top Headlines</h1>
+            {this.state.loading && <Spinner/>}
             <div className="row">
-              {this.state.articles.map((element, index) => (
+              {!this.state.loading && this.state.articles.map((element, index) => (
                 <div className="col-md-4" key={index}>
                   <NewsItem
                     title={
@@ -109,7 +135,7 @@ export class News extends Component {
             <button
               type="button"
               disabled={this.state.page === 1}
-              class="btn btn-dark"
+              className="btn btn-dark"
               onClick={this.handlePreviousClick}
             >
               &larr;Previous
@@ -117,9 +143,10 @@ export class News extends Component {
             <button
               type="button"
               disabled={
-                this.state.page === Math.ceil(this.state.totalResults / 50)
+                this.state.page ===
+                Math.floor(this.state.totalResults / this.props.pageSize + 1)
               }
-              class="btn btn-dark"
+              className="btn btn-dark"
               onClick={this.handleNextClick}
             >
               Next&rarr;

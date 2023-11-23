@@ -8,8 +8,8 @@ export default class App extends Component {
   render() {
     return (
       <>
-        <Navbar />
-        <News/>
+        <Navbar/>
+        <News pageSize={3} country='in' category='sports'/>
       </>
     );
   }
