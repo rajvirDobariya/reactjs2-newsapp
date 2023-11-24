@@ -1,14 +1,16 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 export class Navbar extends Component {
   render() {
     return (
       <>
+      
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className="container-fluid">
-            <a className="navbar-brand" href="/">
+            <Link className="navbar-brand" to="/">
               NewsMonkey
-            </a>
+            </Link>
             <button
               className="navbar-toggler"
               type="button"
@@ -26,44 +28,39 @@ export class Navbar extends Component {
             >
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <a className="nav-link" aria-current="page" href="/">
-                    Home
-                  </a>
+                <Link className="nav-link" aria-current="page" to="/">
+            Home
+          </Link>
+          </li>
+                <li className="nav-item">
+                  <Link className="nav-link " aria-current="page" to="/business">
+                    Business
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="/about">
-                    About
-                  </a>
+                  <Link className="nav-link " aria-current="page" to="/entertainment">
+                  Entertainment
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link " aria-current="page" href="/">
-                    business
-                  </a>
+                  <Link className="nav-link " aria-current="page" to="/generalhealth">
+                    Generalhealth
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link " aria-current="page" href="/">
-                    entertainment
-                  </a>
+                  <Link className="nav-link " aria-current="page" to="/science">
+                    Science
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link " aria-current="page" href="/">
-                    generalhealth
-                  </a>
+                  <Link className="nav-link " aria-current="page" to="/sports">
+                    Sports
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link " aria-current="page" href="/">
-                    science
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link " aria-current="page" href="/">
-                    sports
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link " aria-current="page" href="/">
-                    technology{" "}
-                  </a>
+                  <Link className="nav-link " aria-current="page" to="/technology">
+                    Technology
+                  </Link>
                 </li>
               </ul>
             </div>
